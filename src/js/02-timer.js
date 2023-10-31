@@ -21,13 +21,21 @@ const options = {
         } else {
             btn.disabled = false;
             btn.addEventListener("click", (evnt) => {
-                setInterval(() => {
-                    let counter = convertMs(selectedDates[0] - new Date());
+                const intId = setInterval(() => {
+                    let counter = selectedDates[0] - new Date();
+                    counter - 1000;
+                    if (counter < 1000) {
+                        setTimeout(() => {
+                            clearInterval(intId);
+                            return Notiflix.Report.warning('Вибачте', 'Час вийшов', ':(');
+                        }, 999);
+                    };
+                    counter = convertMs(counter);
+
                     days.textContent = addLeadingZero(counter.days);
                     hours.textContent = addLeadingZero(counter.hours);
                     minutes.textContent = addLeadingZero(counter.minutes);
                     seconds.textContent = addLeadingZero(counter.seconds);
-                    counter - 1000;
                 }, 1000);
             })
         };
