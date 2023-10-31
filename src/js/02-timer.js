@@ -7,20 +7,23 @@ let days = document.querySelector('[data-days]');
 let hours = document.querySelector('[data-hours]');
 let minutes = document.querySelector('[data-minutes]');
 let seconds = document.querySelector('[data-seconds]');
-
+const input = document.querySelector('#datetime-picker');
 
 btn.disabled = true;
+
 const options = {
     enableTime: true,
     time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
+        btn.disabled = false;
         if (selectedDates[0] < new Date()) {
             Notiflix.Report.warning('Увага', 'Виберіть дату в майбутньому', 'оК');
         } else {
-            btn.disabled = false;
             btn.addEventListener("click", (evnt) => {
+                btn.disabled = true;
+                input.disabled = true;
                 const intId = setInterval(() => {
                     let counter = selectedDates[0] - new Date();
                     counter - 1000;
@@ -29,9 +32,9 @@ const options = {
                             clearInterval(intId);
                             return Notiflix.Report.warning('Вибачте', 'Час вийшов', ':(');
                         }, 999);
+                        input.disabled = false;
                     };
                     counter = convertMs(counter);
-
                     days.textContent = addLeadingZero(counter.days);
                     hours.textContent = addLeadingZero(counter.hours);
                     minutes.textContent = addLeadingZero(counter.minutes);
